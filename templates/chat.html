@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}Interview{% endblock %}
+
+
+    
+        
+       
+    {% block content %}
+
+    <script type="text/javascript" charset="utf-8">
+        
+       
+       
+        var socket;
+                
+                $(document).ready(function(){
+                    socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+                    //socket = io.connect('http://localhost:8000/chat')
+                    socket.on('connect', function() {
+                        socket.emit('joined', {});
+                    });
+                    
+                    socket.on('status', function(data) {
+                        $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
+                        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                    });
+                    socket.on('message', function(data) {
+                     
+                        // $( 'div.chat-list' ).append('<div class="chat-img"><img alt="Avtar" src="http://bootdey.com/img/Content/avatar/avatar1.png"></div>')
+                        $( 'div.chat-list' ).append('<div class="in"><div class="chat-body"><div class="chat-message"><h5>Interviewer</h5><p>'+ data.msg +'</p></div></div></div>' )
+        
+                        $('#chat').val($('#chat').val()  + data.msg + '\n');
+                        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                    });
+                    socket.on('message1', function(data) {
+                      
+                      $( 'div.chat-list').append('<div class="out"><div class="chat-body"><div class="chat-message"><h5>' + data.name + '</h5><p>'+ data.msg + '\n' + '</p></div></div></div>' )
+                      $('#chat').scrollTop($('#chat')[0].scrollHeight);
+        
+                  });
+                  socket.on('image_message', function(data) {
+                      
+                      $( 'div.chat-list').append('<div class="in"><div class="chat-body"><div class="chat-message"><h5>Interviewer</h5><p>' + data.msg + '\n' + '</p></div><div><img src="' + data.source + '"></div></div></div></div>' )
+                      $('#chat').scrollTop($('#chat')[0].scrollHeight);
+        
+                  });
+                    
+                    $('#text').keypress(function(e) {
+                        var code = e.keyCode || e.which;
+                        if (code == 13) {
+                            text = $('#text').val();
+                            $('#text').val('');
+                            socket.emit('text', {msg: text});
+                            // keep the data so I can display it?
+                        }
+                    });
+        
+                    $(document).on("click", "button", function() {
+                      if(this.id == "send") {
+                        text = $('#text').val();
+                            $('#text').val('');
+                            socket.emit('text', {msg: text});
+                      }
+                    });
+        
+                    socket.on('disconnect', function(data) {
+                     
+                      socket.disconnect();
+        
+                      var longtext = data.script
+                      console.log(data.script);
+                      
+                    console.log("disconnected");
+        
+        
+                      $.ajax({
+                        type: "POST",
+                        url: '/hr_view',
+                        data: JSON.stringify(longtext),
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                    });
+                   
+                    
+        
+                      window.setTimeout(function(){
+        
+                      // Move to a new location or you can do something else
+                      window.location.href = "{{ url_for('hr_view') }}";
+                    // window.location.href = "http://localhost:8000/hr_view";
+        
+                        }, 5000);
+                  });
+                  
+        
+                      
+                });
+            </script> 
+
+
+    <div></div>
+    
+    <div class="container content" style="height: 75%; width: 75%; margin: 0 auto;" >
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" >
+                <div class="card">
+                    <div class="card-header" >Chat</div>
+                    <!-- Get a function that is retrieving the height and weight of the screen and use the fixed weight in here -->
+                    <div class="card-body height3" style="height:750px; width:100%;">
+                        <div class="chat-list" id="chat" style="overflow:auto;z-index:1;height:105%;margin-top: -19px;margin-left: -19px;margin-right: -19px;">
+
+
+            <!-- <div class="out">
+                <div class="chat-img">
+                    <img alt="Avtar" src="http://bootdey.com/img/Content/avatar/avatar6.png">
+                </div>
+                <div class="chat-body">
+                    <div class="chat-message">
+                        <h5>Applicant</h5>
+                        <p>Next level veard</p>
+                    </div>
+                </div>
+            </div>
+        -->
+           
+                  
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+            </div>
+        </div>
+
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="input-group mb-3">
+                        <input id="text" type="text" class="form-control" size="78" placeholder="Message" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                                <button id="send" class="btn btn btn-dark" type="button">Send</button>
+                            </div>
+                    </div>
+                    
+                </div>
+              
+                    <!-- <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary" type="button">Button</button>
+                            </div>
+                          </div> -->
+                </div>
+            </div>
+        </div>
+
+    <!-- <div class="row h-100 justify-content-center align-items-center">
+
+        <button type="button" onclick="leave_room();" class="btn btn-secondary">Leave the interview</button>
+
+    </div> -->
+
+    
+        
+
+{% endblock %}

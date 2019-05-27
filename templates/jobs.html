@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Jobs{% endblock %}
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }} </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="job_navbar">
+                    <ul class="nav flex-column" id="selectable_jobs" onclick="getSelectedJob();">
+                        {% for job in jobs %}
+                      <li class="nav-item" id="{{job._id}}">
+                          <div class=" card job_card">
+                              <div class="card-body">
+                                <h5 class="card-title">{{job.title}}</h5>
+                                  <h6 class="card-subtitle mb-2 text-muted">{{job.company}}</h6>
+                                  <p class="card-text">{{job.short_description}}</p>
+                                  <p class="mb-1 text-muted">Posted: {{job.dop}}</p>
+                              </div>
+                          </div>
+                      </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="job_pane">
+                     <div class="row">
+                          <div class="col-md-12 job_introduction">
+                              <h2 id="title"></h2>
+                              <h4 class="mb-2 text-muted"><span class="job_company" id="company"></span><span class="job_location" id="location"> Leeds, UK</span></h4>
+                                <p>Posted <span class="job_dop" id="dop"></span></p>
+                              <div class="apply_btn"></div>
+                          </div>
+                     </div>
+                     <div class="row">
+                        <div class=" col-md-12 job_description" id="description">
+                            <p></p>
+                        </div>
+                     </div>
+                    <div class="row">
+                        <div class="col-md-6"><b>Industry:</b><div class="job_industry" id="industry"></div></div>
+                        <div class="col-md-6"><b>Employment type:</b><div class="job_employment_type" id="employment_type"></div></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"><b>Job Functions:</b><div class="job_functions" id="functions"></div></div>
+                        <div class="col-md-6"><b>Education:</b><div class="job_education" id="education"></div></div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-group job_skills" id="skills"></ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group job_skills" id="skills_2"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

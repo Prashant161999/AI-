@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Your submission{% endblock %}
+{% block content %}
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+
+                    <embed src="https://7b997c14-00b2-4ebb-8386-b772c09062ba-bluemix.cloudant.com/applications/{{data.id}}/{{data.filename}}" type="application/pdf" width="100%" height="800px">
+
+                </div>
+            </div>
+        </div>
+   
+{% endblock %}
+
+
+

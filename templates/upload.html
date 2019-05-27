@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}CV Upload{% endblock %}
+{% block content %}
+
+
+  
+
+    <div class="container">
+        <div style="margin-bottom: 5%; margin-top: 5%">
+                <h1 class="text-center"><span class="badge badge-secondary">Upload your CV</span></h1>
+        </div>
+
+        <div>
+
+                {% with messages = get_flashed_messages(category_filter=["error"]) %}
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      <strong>Error: </strong>{{message[0]}}
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+                {% endfor %}  
+                {% endif %} 
+                {% endwith %}
+
+
+                
+                {% with success_messages = get_flashed_messages(category_filter=["success"]) %}
+                {% if success_messages %}
+                {% for message in success_messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      <strong>Success: </strong>{{message}}. <a href="/login" class="alert-link">Click here</a> to start the interview or <a href="/view_pdf" class="alert-link">Click here</a> a to view your submission .
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+                {% endfor %}  
+                {% endif %} 
+                {% endwith %}
+
+        </div>
+        <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+            <div class="form-group row">
+                    <label for="file" class="col-2 col-form-label">CV: </label>
+                    <div class="col-10">
+                        <input class="form-control" type="file" id="file" name="inputFile">
+                </div>
+            </div>
+         
+            <button type="submit" class="btn btn-primary">Upload</button>
+          </form>
+            
+        </div>
+
+     
+{% endblock %}
+
+
+

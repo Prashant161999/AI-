@@ -1,0 +1,10 @@
+Flask==1.0
+cloudant==2.4.0
+Flask-WTF==0.14
+WTForms==2.2.1
+Flask-SocketIO==3.0.1
+watson_developer_cloud==2.7.0
+gevent==1.4.0
+python-socketio==1.9.0
+ibm-watson>=3.0.3
+Werkzeug==0.15.2
