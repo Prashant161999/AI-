@@ -7,4 +7,4 @@ watson_developer_cloud==2.7.0
 gevent==1.4.0
 python-socketio==1.9.0
 ibm-watson>=3.0.3
-Werkzeug==0.15.2
+Werkzeug==0.15.3
